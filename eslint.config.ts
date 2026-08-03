@@ -55,6 +55,7 @@ export default defineConfig([
       "sort-imports": "off",
       "sort-keys": "off",
       "sort-vars": "off",
+      "astro/sort-attributes": "off",
     },
   },
   eslintConfigPrettier,

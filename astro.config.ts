@@ -13,4 +13,11 @@ export default defineConfig({
   ...(SITE_URL && { site: SITE_URL }),
   ...(BASE_PATH && { base: BASE_PATH }),
   trailingSlash: "always",
+  i18n: {
+    defaultLocale: "ja",
+    locales: ["ja", "en"],
+    routing: {
+      prefixDefaultLocale: true,
+    },
+  },
 });

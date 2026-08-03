@@ -1,0 +1,24 @@
+---
+console.log("Hello, World, from console!");
+
+const lists: string[] = ["aaa", "bbb", "ccc"];
+---
+
+<html lang="en">
+  <head>
+    <title>Hello, World!</title>
+    <style>
+      h1 {
+        color: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Hello, World!</h1>
+      <ul>
+        {lists.map((tag) => <li class:list={tag}>{tag}</li>)}
+      </ul>
+    </main>
+  </body>
+</html>
