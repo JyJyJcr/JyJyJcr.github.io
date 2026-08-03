@@ -1,0 +1,58 @@
+name: deploy
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: 24
+
+jobs:
+  build:
+    name: build pages artifacts
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      # build setup
+      - name: checkout
+        uses: actions/checkout@v7
+      - name: setup node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - name: install dependencies
+        run: npm ci
+      # build pages for github pages
+      - name: get github pages info
+        id: get-github-pages-info
+        uses: actions/configure-pages@v5
+      - name: build pages for github pages
+        run: npm run build
+        env:
+          ASTRO_SITE: ${{ steps.get-github-pages-info.outputs.page_url }}
+          ASTRO_BASE: ${{ steps.get-github-pages-info.outputs.base_path }}
+      # upload artifact
+      - name: upload pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+  deploy-github-pages:
+    name: deploy pages artifact to github pages
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy-pages.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy to github pages
+        id: deploy-pages
+        uses: actions/deploy-pages@v5
