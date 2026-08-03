@@ -9,16 +9,21 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "check": "astro check",
+    "format": "biome check --write src",
+    "lint": "biome check src",
+    "astro": "astro",
+    "biome": "biome"
   },
   "dependencies": {
-    "astro": "^7.0.9"
+    "astro": "^7.1.6"
   },
   "devDependencies": {
-    "eslint": "^10.7.0",
-    "eslint-plugin-astro": "^3.0.1",
-    "prettier": "^3.9.5",
-    "prettier-plugin-astro": "^0.14.1",
-    "typescript-eslint": "^8.65.0"
+    "@biomejs/biome": "^2.5.6",
+    "@types/node": "^26.1.2",
+    "jiti": "^2.7.0",
+    "npm-check-updates": "^23.0.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.0"
   }
 }
