@@ -1,0 +1,58 @@
+---
+import type { Language } from "../i18n/types";
+import { ui as allUi } from "../data/ui";
+import { langRoute } from "../route";
+
+interface Props {
+  lang: Language;
+}
+const { lang } = Astro.props,
+  ui  = allUi[lang];
+---
+
+<header class="site-header">
+  <a href={langRoute(lang, "/")}>{ui.profile.name}</a>
+    {
+      (
+        <nav aria-label="Main navigation">
+          <a href={langRoute(lang, "/#about")}>About</a>
+          <a href={langRoute(lang, "/#research")}>Research</a>
+          <a href={langRoute(lang, "/#projects")}>Projects</a>
+          <a href={langRoute(lang, "/#contact")}>Contact</a>
+        </nav>
+        <div class="language">{}</div>
+      )
+    }
+  </header>
+
+<!-- <style>
+  .site-header {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .site-title {
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+
+  nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: inherit;
+  }
+</style> -->

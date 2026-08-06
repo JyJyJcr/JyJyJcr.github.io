@@ -1,5 +1,8 @@
 ---
+import { switchLang } from "../../route";
 console.log("Hello, World, from console!");
+
+console.log("switch to ja: ", switchLang("ja", Astro.url.pathname));
 
 const lists: string[] = ["aaa", "bbb", "ccc"];
 ---

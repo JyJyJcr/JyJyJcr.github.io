@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="format-detection" content="telephone=no,email=no,address=no" />
+    <title>JyJyJcrのホムペ</title>
+    <style>
+        /*テーマ色*/
+        :root {
+            /*
+                --theme-color:#ffffff;
+                --accent-color:#b02020;
+                --ui-color:#4040ff;
+                oklch(100%,0%,0)->oklch(*** 0 0)
+                oklch(49.1%, 44.75%, 26.963%)->oklch(*** 0.27 30)
+                oklch(51.9%, 67.25%, 271.93%)->oklch(*** 0.25 270)
+                */
+            --tb: oklch(100% 0 0);
+            --ts: oklch(85% 0 0);
+            --tw: oklch(25% 0 0);
+
+            --rb: oklch(0% 0 0);
+            --rs: oklch(100% 0 0);
+            --rw: oklch(100% 0 0);
+
+            --ab: oklch(100% 0 30);
+            --as: oklch(60% 0.24 30);
+            --aw: oklch(140% 0.24 30);
+
+            --ub: oklch(100% 0 270);
+            --us: oklch(60% 0.27 270);
+            --uw: oklch(125% 0.27 270);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+
+                /*
+                    oklch(0%,0%,0)->oklch(*** 0 0)
+                    oklch(49.1%, 44.75%, 26.963%)->oklch(*** 0.27 30)
+                    oklch(51.9%, 67.25%, 271.93%)->oklch(*** 0.22 270)
+                    --theme-color:#000000;
+                    --accent-color:#b02020;
+                    --ui-color:#4040ff;
+                    */
+
+                --tb: oklch(25% 0 0);
+                --ts: oklch(40% 0 0);
+                --tw: oklch(125% 0 0);
+
+                --rb: oklch(100% 0 0);
+                --rs: oklch(0% 0 0);
+                --rw: oklch(25% 0 0);
+
+                --ab: oklch(25% 0.05 30);
+                --as: oklch(60% 0.24 30);
+                --aw: oklch(170% 0.24 30);
+
+                --ub: oklch(25% 0.05 270);
+                --us: oklch(60% 0.27 270);
+                --uw: oklch(170% 0.27 270);
+            }
+        }
+
+        :root {
+            --tss: color-mix(in oklch, var(--tw) 100%, var(--tb));
+            --tbs: color-mix(in oklch, var(--ts) 100%, var(--tb));
+            --tsm: color-mix(in oklch, var(--tw) 60%, var(--tb));
+            --tbm: color-mix(in oklch, var(--ts) 50%, var(--tb));
+            --tsw: color-mix(in oklch, var(--tw) 40%, var(--tb));
+            --tbw: color-mix(in oklch, var(--ts) 20%, var(--tb));
+
+            --rss: color-mix(in oklch, var(--rw) 100%, var(--rb));
+            --rbs: color-mix(in oklch, var(--rs) 0%, var(--rb));
+            --rsm: color-mix(in oklch, var(--rw) 90%, var(--rb));
+            --rbm: color-mix(in oklch, var(--rs) 20%, var(--rb));
+            --rsw: color-mix(in oklch, var(--rw) 80%, var(--rb));
+            --rbw: color-mix(in oklch, var(--rs) 40%, var(--rb));
+
+            --ass: color-mix(in oklch, var(--aw) 100%, var(--ab));
+            --abs: color-mix(in oklch, var(--as) 100%, var(--ab));
+            --asm: color-mix(in oklch, var(--aw) 85%, var(--ab));
+            --abm: color-mix(in oklch, var(--as) 80%, var(--ab));
+            --asw: color-mix(in oklch, var(--aw) 75%, var(--ab));
+            --abw: color-mix(in oklch, var(--as) 60%, var(--ab));
+
+            --uss: color-mix(in oklch, var(--uw) 100%, var(--ub));
+            --ubs: color-mix(in oklch, var(--us) 100%, var(--ub));
+            --usm: color-mix(in oklch, var(--uw) 85%, var(--ub));
+            --ubm: color-mix(in oklch, var(--us) 80%, var(--ub));
+            --usw: color-mix(in oklch, var(--uw) 75%, var(--ub));
+            --ubw: color-mix(in oklch, var(--us) 60%, var(--ub));
+        }
+
+        /*継承される要素*/
+        html {
+            font-family: sans-serif;
+            word-break: break-word;
+            color-scheme: light dark;
+        }
+
+        /*継承されない要素*/
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            color: var(--tw);
+            background: var(--tb);
+            min-height: 100vh;
+        }
+
+        body,
+        section {
+            margin-left: 1em;
+        }
+
+        /*
+                mainでの処理を軽くするため親を省いている
+                headerとfooterではoverrideせよ
+            */
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        img,
+        blockquote,
+        ol,
+        ul,
+        table,
+        pre>code {
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            text-indent: -0.125em;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+        }
+
+        h5::before,
+        h6::before {
+            content: 'TOO MUCH NEST!';
+        }
+
+        h1 {
+            font-size: 200%;
+        }
+
+        h2 {
+            font-size: 150%;
+        }
+
+        h3 {
+            font-size: 125%;
+        }
+
+        h4,
+        h5,
+        h6 {
+            font-size: 100%;
+        }
+
+        ul,
+        ol {
+            margin-left: 2em;
+        }
+
+        table {
+            border: none;
+            border-collapse: separate;
+        }
+
+        thead {
+            color: var(--rss);
+            background: var(--rbs);
+        }
+
+        tbody {
+            color: var(--tss);
+            background: var(--tbs);
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 0.5em;
+        }
+
+        code {
+            white-space: pre-wrap;
+            font-family: monospace;
+            color: var(--tss);
+            background: var(--tbs);
+            display: inline;
+            font-size: 125%;
+            padding: 0.1em 0.3em;
+            border-radius: 0.3em;
+        }
+
+        pre>code {
+            display: block;
+            padding: 1em;
+            border-radius: 1em;
+        }
+
+        blockquote {
+            padding: 1em;
+            color: var(--tsm);
+            background: var(--tbm);
+            border-radius: 1em;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        a {
+            color: var(--us);
+        }
+
+        input,
+        select,
+        button,
+        textarea {
+            font-size: inherit;
+            font-family: inherit;
+            color: inherit;
+            background-color: inherit;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>h1段落</h1>
+    <p>h1テキスト</p>
+    <section>
+        <h2>h2段落</h2>
+        <p>h2テキスト</p>
+        <section>
+            <h3>h3段落</h3>
+            <p>h3テキスト</p>
+            <section>
+                <h4>h4段落</h4>
+                <p>h4テキスト</p>
+                <section>
+                    <h5>h5段落</h5>
+                    <p>h5テキスト</p>
+                    <section>
+                        <h6>h6段落</h6>
+                        <p>h6テキスト</p>
+                        <pre><code>int main() {
+    printf("Hello, World!\n");
+    return 0;
+}</code></pre>
+                    </section>
+                </section>
+            </section>
+        </section>
+</body>
+
+</html>

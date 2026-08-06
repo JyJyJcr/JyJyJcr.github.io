@@ -1,20 +1,11 @@
 ---
-console.log("Hello, World, from console!");
+import { langRoute, removeBase } from "../route";
+const url = langRoute("en", "/");
+
+console.log("Base URL:", import.meta.env.BASE_URL);
+console.log("current URL:", Astro.url.pathname);
+console.log("remove base:", removeBase(Astro.url.pathname));
+
+console.log("Redirecting to:", url);
+return Astro.redirect(url);
 ---
-
-{
-  /*
-  java script style comment will be removed (recommended)
-  */
-}
-
-<html>
-  <body>
-    <h1>Hello, World!</h1>
-  </body>
-</html>
-<style>
-  h1 {
-    color: orange;
-  }
-</style>

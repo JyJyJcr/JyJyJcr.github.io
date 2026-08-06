@@ -14,8 +14,8 @@ export default defineConfig({
   ...(BASE_PATH && { base: BASE_PATH }),
   trailingSlash: "always",
   i18n: {
-    defaultLocale: "ja",
-    locales: ["ja", "en"],
+    defaultLocale: "en",
+    locales: ["en", "ja"],
     routing: {
       prefixDefaultLocale: true,
     },
