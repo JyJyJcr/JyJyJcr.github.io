@@ -18,7 +18,7 @@ export default defineConfig([
     },
   },
   {
-    files: ["**/*.{css,scss,sass,less}"],
+    files: ["**/*.{css}"],
     plugins: {
       css,
     },
@@ -26,36 +26,21 @@ export default defineConfig([
     extends: ["css/recommended"],
   },
   {
-    files: ["**/*.{js,jsx,cjs,mjs}"],
+    files: ["**/*.{js,jsx,cjs,mjs}", "**/*.{ts,tsx,cts,mts}", "**/*.astro"],
     extends: [jseslint.configs.all],
-  },
-  {
-    files: ["**/*.{ts,tsx,cts,mts}"],
-    extends: [
-      jseslint.configs.all,
-      tseslint.configs.strictTypeChecked,
-      tseslint.configs.stylisticTypeChecked,
-    ],
-  },
-  {
-    files: ["**/*.astro"],
-    extends: [
-      jseslint.configs.all,
-      tseslint.configs.strictTypeChecked,
-      tseslint.configs.stylisticTypeChecked,
-      eslintPluginAstro.configs.all,
-    ],
-    rules: {
-      "no-console": "off",
-      "@typescript-eslint/no-unsafe-return": "off",
-    },
-  },
-  {
     rules: {
       "sort-imports": "off",
       "sort-keys": "off",
       "sort-vars": "off",
-      "astro/sort-attributes": "off",
+    },
+  },
+  {
+    files: ["**/*.{ts,tsx,cts,mts}", "**/*.astro"],
+    extends: [
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
+    rules: {
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -68,6 +53,15 @@ export default defineConfig([
           ignoreRestSiblings: true,
         },
       ],
+    },
+  },
+  {
+    files: ["**/*.astro"],
+    extends: [eslintPluginAstro.configs.all],
+    rules: {
+      "no-console": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
+      "astro/sort-attributes": "off",
     },
   },
   eslintConfigPrettier,
