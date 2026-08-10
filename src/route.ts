@@ -1,55 +1,55 @@
-import type { Language } from "./i18n/types";
+import type { Locale } from "./i18n";
 
-const basePath = import.meta.env.BASE_URL.replace(/\/$/u, ""),
-  basePathWithSlash = `${basePath}/`,
-  removeBase = (path: string): string => {
-    if (!path.startsWith("/")) {
-      throw new Error(`Path "${path}" is not an absolute path.`);
-    }
-    if (!path.startsWith(basePathWithSlash)) {
-      throw new Error(
-        `Path "${path}" does not start with base path "${basePath}".`,
-      );
-    }
-    return path.slice(basePath.length);
-  },
-  addBase = (path: string): string => {
-    if (!path.startsWith("/")) {
-      throw new Error(`Path "${path}" is not an absolute path.`);
-    }
-    return `${basePath}${path}`;
-  },
-  splitLang = (path: string): [Language, string] => {
-    if (!path.startsWith("/")) {
-      throw new Error(`Path "${path}" is not an absolute path.`);
-    }
+const basePath = import.meta.env.BASE_URL.replace(/\/$/u, "");
+const basePathWithSlash = `${basePath}/`;
+const removeBase = (path: string): string => {
+  if (!path.startsWith("/")) {
+    throw new Error(`Path "${path}" is not an absolute path.`);
+  }
+  if (!path.startsWith(basePathWithSlash)) {
+    throw new Error(
+      `Path "${path}" does not start with base path "${basePath}".`,
+    );
+  }
+  return path.slice(basePath.length);
+};
+const addBase = (path: string): string => {
+  if (!path.startsWith("/")) {
+    throw new Error(`Path "${path}" is not an absolute path.`);
+  }
+  return `${basePath}${path}`;
+};
+const splitLocale = (path: string): [Locale, string] => {
+  if (!path.startsWith("/")) {
+    throw new Error(`Path "${path}" is not an absolute path.`);
+  }
 
-    const [, lang, ...rest] = path.split("/");
-    if (!lang) {
-      throw new Error(`Path "${path}" does not contain a language segment.`);
-    }
-    return [lang as Language, `/${rest.join("/")}`];
-  },
-  addLang = (lang: Language, path: string): string => {
-    if (!path.startsWith("/")) {
-      throw new Error(`Path "${path}" is not an absolute path.`);
-    }
-    return `/${lang}${path}`;
-  },
-  commonRoute = (path: string): string => addBase(path),
-  langRoute = (lang: Language, path: string): string =>
-    addBase(addLang(lang, path)),
-  switchLang = (lang: Language, path: string): string => {
-    const [_currentLang, rest] = splitLang(removeBase(path));
-    return langRoute(lang, rest);
-  };
+  const [, locale, ...rest] = path.split("/");
+  if (!locale) {
+    throw new Error(`Path "${path}" does not contain a language segment.`);
+  }
+  return [locale as Locale, `/${rest.join("/")}`];
+};
+const addLocale = (lang: Locale, path: string): string => {
+  if (!path.startsWith("/")) {
+    throw new Error(`Path "${path}" is not an absolute path.`);
+  }
+  return `/${lang}${path}`;
+};
+const prefixCommonRoot = (path: string): string => addBase(path);
+const prefixLocaleRoot = (locale: Locale, path: string): string =>
+  addBase(addLocale(locale, path));
+const switchLocale = (locale: Locale, path: string): string => {
+  const [, rest] = splitLocale(removeBase(path));
+  return prefixLocaleRoot(locale, rest);
+};
 
 export {
   removeBase,
   addBase,
-  splitLang,
-  addLang,
-  commonRoute,
-  langRoute,
-  switchLang,
+  splitLocale,
+  addLocale,
+  prefixCommonRoot,
+  prefixLocaleRoot,
+  switchLocale,
 };

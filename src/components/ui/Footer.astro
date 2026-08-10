@@ -1,0 +1,13 @@
+---
+import type { FooterTranslation } from "./Footer.types";
+
+interface Props {
+  translation: FooterTranslation;
+}
+
+const { translation } = Astro.props;
+---
+
+<footer>
+  <p>&copy; {new Date().getFullYear()} · {translation.builtWithAstro}</p>
+</footer>

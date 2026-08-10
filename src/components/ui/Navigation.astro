@@ -1,0 +1,93 @@
+---
+import type { NavigationTranslation } from "./Navigation.types";
+
+interface Props {
+  translation: NavigationTranslation;
+  rootPrefixer: (path: string) => string;
+}
+const { translation, rootPrefixer } = Astro.props;
+---
+
+<nav
+  class="navigation-links desktop-navigation"
+  aria-label={translation.explanation}
+>
+  <a href={rootPrefixer("/#about")}>{translation.nav.about}</a>
+  <a href={rootPrefixer("/#papers")}>{translation.nav.papers}</a>
+  <a href={rootPrefixer("/#projects")}>{translation.nav.projects}</a>
+  <a href={rootPrefixer("/#contact")}>{translation.nav.contact}</a>
+</nav>
+
+<details class="navigation-menu mobile-navigation">
+  <summary aria-label={translation.explanation}>Menu</summary>
+  <nav class="navigation-links" aria-label={translation.explanation}>
+    <a href={rootPrefixer("/#about")}>{translation.nav.about}</a>
+    <a href={rootPrefixer("/#papers")}>{translation.nav.papers}</a>
+    <a href={rootPrefixer("/#projects")}>{translation.nav.projects}</a>
+    <a href={rootPrefixer("/#contact")}>{translation.nav.contact}</a>
+  </nav>
+</details>
+
+<style>
+  .navigation-menu summary {
+    cursor: pointer;
+    list-style: none;
+    font-weight: 700;
+  }
+
+  .navigation-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+  }
+
+  nav a {
+    color: var(--text-soft);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  nav a:hover,
+  nav a:focus-visible {
+    color: var(--accent-strong);
+  }
+
+  @media (min-width: 761px) {
+    .mobile-navigation {
+      display: none;
+    }
+
+    .navigation-links {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .desktop-navigation {
+      display: none;
+    }
+
+    :global(.navigation-menu[open] .navigation-links) {
+      position: absolute;
+      top: calc(100% - 0.25rem);
+      left: 1rem;
+      display: grid;
+      gap: 0.75rem;
+      min-width: 11rem;
+      padding: 1rem;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(20, 36, 51, 0.14);
+    }
+
+    .navigation-menu:not([open]) .navigation-links {
+      display: none;
+    }
+  }
+</style>

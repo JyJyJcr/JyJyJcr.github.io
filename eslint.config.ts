@@ -32,6 +32,8 @@ export default defineConfig([
       "sort-imports": "off",
       "sort-keys": "off",
       "sort-vars": "off",
+      "capitalized-comments": "off",
+      "one-var": ["error", "never"],
     },
   },
   {

@@ -1,35 +1,284 @@
 ---
-import type { Language } from "../i18n/types";
+import { localeList, type Locale } from "../i18n";
+import Head from "../components/Head.astro";
+import Header from "../components/ui/Header.astro";
+import Footer from "../components/ui/Footer.astro";
+import { baseTranslations } from "../i18n/ui";
+import { prefixLocaleRoot, switchLocale } from "../route";
 
 interface Props {
-  lang: Language;
+  locale: Locale;
   title: string;
   description: string;
 }
-const { lang, title, description } = Astro.props;
+
+const { locale, title, description } = Astro.props;
+const translation = baseTranslations[locale];
 ---
 
-<html lang={lang}>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
+<html lang={locale}>
+  <Head title={title} description={description} />
   <body>
-    <slot />
+    <div aria-hidden="true" class="ambient"></div>
+    <Header
+      selectedLocale={locale}
+      localeList={[...localeList]}
+      translation={translation.header}
+      rootPrefixer={(path: string) => prefixLocaleRoot(locale, path)}
+      localeSwitcher={(loc: Locale, path: string) => switchLocale(loc, path)}
+    />
+    <div class="page-content">
+      <slot />
+    </div>
+    <Footer translation={translation.footer} />
   </body>
 </html>
 
-<style>
+<style is:global>
+  :root {
+    --bg: #f4f6f8;
+    --bg-deep: #dbe3ea;
+    --text: #142433;
+    --text-soft: #365266;
+    --card: rgba(255, 255, 255, 0.86);
+    --line: #b7c8d8;
+    --accent: #0e7490;
+    --accent-strong: #155e75;
+    --header-height: 4.5rem;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
   body {
-    font-family: system-ui, sans-serif;
+    margin: 0;
+    min-height: 100%;
+    padding: 0;
+    font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+    color: var(--text);
+    background: radial-gradient(
+      circle at 15% 10%,
+      #fff 0%,
+      var(--bg) 50%,
+      var(--bg-deep) 100%
+    );
+  }
+
+  body {
+    line-height: 1.5;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .ambient {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(120deg, rgba(14, 116, 144, 0.1), transparent 50%),
+      linear-gradient(320deg, rgba(21, 94, 117, 0.12), transparent 45%);
+    z-index: 0;
+  }
+
+  .page-content {
+    position: relative;
+    z-index: 1;
+    padding-top: var(--header-height);
+  }
+
+  main,
+  footer {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 4rem);
+  }
+
+  main {
+    display: grid;
+    gap: 1.2rem;
+    padding-bottom: 2rem;
+  }
+
+  .hero,
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: clamp(1.2rem, 2vw + 0.8rem, 2.1rem);
+  }
+
+  .hero {
+    animation: fade-up 0.55s ease;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--accent-strong);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0.45rem 0 0;
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    line-height: 1.1;
+  }
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0.9rem;
+    font-size: clamp(1.2rem, 2.3vw, 1.5rem);
+  }
+
+  .subtitle {
+    max-width: 66ch;
+    margin-bottom: 1.2rem;
+    color: var(--text-soft);
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .button {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 0.62rem 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .button-primary {
+    color: #fff;
+    background: var(--accent);
+  }
+
+  .button-secondary {
+    color: var(--accent-strong);
+    border: 1px solid var(--accent);
+  }
+
+  .interest-list,
+  .timeline,
+  .tag-list,
+  .contact-list {
     margin: 0;
     padding: 0;
-    line-height: 1.5;
-    color: #333;
-    background-color: #f9f9f9;
+    list-style: none;
+  }
+
+  .interest-list li,
+  .timeline li,
+  .contact-list li {
+    padding: 0.58rem 0;
+    border-bottom: 1px dashed var(--line);
+  }
+
+  .interest-list li:last-child,
+  .timeline li:last-child,
+  .contact-list li:last-child {
+    border-bottom: none;
+  }
+
+  .period {
+    color: var(--accent-strong);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .timeline h3 {
+    margin: 0.35rem 0 0.2rem;
+    font-size: 1rem;
+  }
+
+  .timeline p,
+  .project-item p {
+    color: var(--text-soft);
+  }
+
+  .grid-section,
+  .project-grid {
+    display: grid;
+    gap: 1.2rem;
+  }
+
+  .grid-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .project-item {
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #f9fcff;
+  }
+
+  .project-item h3 {
+    margin-top: 0;
+    font-size: 1.05rem;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+
+  .tag-list li {
+    padding: 0.24rem 0.62rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--text-soft);
+    font-size: 0.8rem;
+    background: #fff;
+  }
+
+  .contact-list a {
+    color: var(--accent-strong);
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  footer {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    border-top: 1px solid var(--line);
+    color: var(--text-soft);
+    padding: 1rem clamp(1rem, 4vw, 4rem) 1.25rem;
+    background: rgba(255, 255, 255, 0.62);
+    font-size: 0.93rem;
+  }
+
+  @media (max-width: 760px) {
+    :root {
+      --header-height: 4rem;
+    }
+
+    .grid-section {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

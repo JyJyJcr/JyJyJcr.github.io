@@ -1,0 +1,83 @@
+---
+import { localeInfos, type Locale } from "../../i18n";
+
+interface Props {
+  selectedLocale: Locale;
+  localeList: Locale[];
+  localeSwitcher: (locale: Locale, path: string) => string;
+}
+const { selectedLocale, localeList, localeSwitcher } = Astro.props;
+---
+
+<details class="locale-selector" data-locale-selector>
+  <summary aria-label="Select language"
+    >{localeInfos[selectedLocale].nativeName}</summary
+  >
+  <ul>
+    {
+      localeList.map((locale) => (
+        <li>
+          <a
+            href={localeSwitcher(locale, Astro.url.pathname)}
+            aria-current={locale === selectedLocale && "page"}
+          >
+            {localeInfos[locale].nativeName}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<script src="./LangSelector.client.ts"></script>
+
+<style>
+  .locale-selector {
+    position: relative;
+  }
+
+  summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  ul {
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    right: 0;
+    display: grid;
+    gap: 0.4rem;
+    min-width: 8rem;
+    margin: 0;
+    padding: 0.6rem;
+    list-style: none;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(20, 36, 51, 0.14);
+  }
+
+  a {
+    display: block;
+    padding: 0.35rem 0.5rem;
+    color: var(--text-soft);
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:focus-visible,
+  a[aria-current="page"] {
+    color: var(--accent-strong);
+    background: #edf7fa;
+  }
+</style>
