@@ -42,8 +42,9 @@ const removeCommonRoot = (path: string): string => removeBase(path);
 const addLocaleRoot = (locale: Locale, path: string): string =>
   addBase(addLocale(locale, path));
 const removeLocaleRoot = (_locale: Locale, path: string): string => {
-  const [, rest] = splitLocale(removeBase(path));
-  return addBase(rest);
+  const pathWithoutBase = removeBase(path);
+  const [, rest] = splitLocale(pathWithoutBase);
+  return rest;
 };
 
 interface Router {
