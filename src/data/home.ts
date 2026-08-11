@@ -17,72 +17,80 @@ const content = {
       eyebrow: "Physics / Computation / Open Source",
       name: "Junya Yokokura",
       about:
-        "I study computational physics and enjoy turning abstract physical questions into clear, reproducible experiments. My interests include statistical mechanics, complex systems, numerical simulation, and the design of scientific software.",
+        "Second-year master's student in physics at the University of Tokyo, working in computational physics.",
       labels: {
-        usernames: "Common usernames",
+        usernames: "Usernames",
         affiliation: "Affiliation",
+        interests: "Research interests",
       },
+      interests: ["Tensor networks", "Parallel computing"],
       affiliation:
-        "Tōdō Laboratory · Department of Physics · Graduate School of Science · The University of Tokyo",
+        "Department of Physics, Graduate School of Science, The University of Tokyo · Tōdō Laboratory",
     },
-    sections: {
-      history: "History",
-      projects: "Projects",
-      papers: "Papers",
-      contact: "Contact",
+    history: {
+      label: "History",
+      entries: [
+        {
+          period: "2025/04 — present",
+          title: "Master's program",
+          detail:
+            "Department of Physics, Graduate School of Science, The University of Tokyo · Tōdō Laboratory",
+        },
+        {
+          period: "2022/08 — 2025/03",
+          title: "Undergraduate program",
+          detail:
+            "Department of Physics, Faculty of Science, The University of Tokyo",
+        },
+        {
+          period: "2021/04 — 2022/07",
+          title: "Undergraduate liberal arts program",
+          detail: "College of Arts and Sciences, The University of Tokyo",
+        },
+      ],
     },
-    history: [
-      {
-        period: "2025/04 — present",
-        title: "Master's student in Physics",
-        detail:
-          "Tōdō Laboratory, Department of Physics, Graduate School of Science, The University of Tokyo",
-      },
-      {
-        period: "2022/08 — 2025/03",
-        title: "Undergraduate student in Physics",
-        detail:
-          "Department of Physics, Faculty of Science, The University of Tokyo",
-      },
-      {
-        period: "2021 — 2022/07",
-        title: "Student in the College of Arts and Sciences",
-        detail:
-          "The University of Tokyo's first two years are organized through its College of Arts and Sciences.",
-      },
-      {
-        period: "2018 — 2021",
-        title: "High school student",
-        detail: "Tochigi Prefectural Moka High School",
-      },
-    ],
-    papers: [
-      {
-        title: "Paper title placeholder",
-        description: "Publication details will be added here.",
-      },
-    ],
-    projects: [
-      {
-        title: "Tensory",
-        description:
-          "A Rust framework for tensor operations with generic backends.",
-        tech: ["Rust", "Linear algebra"],
-      },
-      {
-        title: "APOBLAST",
-        description:
-          "Reproducible notebooks for visualizing time evolution and eigenstate properties in model Hamiltonians.",
-        tech: ["Python", "Symmetry", "Linear algebra"],
-      },
-      {
-        title: "Open-source contributions",
-        description:
-          "Tools and documentation for sharing research notes, talks, and project updates.",
-        tech: ["Astro", "TypeScript", "GitHub Pages"],
-      },
-    ],
-    labels: { email: "Email", github: "GitHub" },
+    projects: {
+      label: "Projects",
+      entries: [
+        {
+          title: "Tensory",
+          description:
+            "A low- to mid-level tensor network library implemented in Rust, combining type-system-based abstraction and extensibility with RAII-style resource management through lifetimes.",
+          tech: ["Rust", "Tensor networks", "Linear algebra"],
+        },
+        {
+          title: "APOBLAST",
+          description:
+            "A library that narrows the search space for equation discovery using symmetry.",
+          tech: [
+            "Python",
+            "Symmetry",
+            "Equation discovery",
+            "Symbolic computation",
+          ],
+        },
+        {
+          title: "Open-source contributions",
+          description:
+            "Contributions to the open-source community, including issues, pull requests, and forks for problems encountered in practice.",
+          tech: ["Nix", "Nginx", "WSL", "And more ..."],
+        },
+      ],
+    },
+    papers: {
+      label: "Papers",
+      entries: [
+        {
+          title:
+            "Symmetry-Informed Term Filtering for Continuum Equation Discovery",
+          description: "A paper associated with APOBLAST.",
+        },
+      ],
+    },
+    contacts: {
+      label: "Contact",
+      entries: { email: "Email", github: "GitHub" },
+    },
   },
   ja: {
     meta: {
@@ -90,71 +98,78 @@ const content = {
       description: "Jyの個人ホームページ。",
     },
     hero: {
-      eyebrow: "Physics / Computation / Open Source",
+      eyebrow: "物理・計算・オープンソース",
       name: "横倉 淳也",
-      about:
-        "東大理物の修士課程生。で、物理的な直観・数理モデル・科学計算の交差点に関心を持って研究しています。",
+      about: "東大理物の修士2年。計算物理学の研究をしています。",
       labels: {
         usernames: "ユーザー名",
         affiliation: "所属",
+        interests: "関心領域",
       },
+      interests: ["テンソルネットワーク", "並列計算"],
       affiliation: "東京大学大学院理学系研究科 物理学専攻 藤堂研究室",
     },
-    sections: {
-      history: "経歴",
-      projects: "プロジェクト",
-      papers: "論文",
-      contact: "連絡先",
+    history: {
+      label: "経歴",
+      entries: [
+        {
+          period: "2025/04 — 現在",
+          title: "修士課程",
+          detail: "東京大学 大学院理学系研究科 物理学専攻 藤堂研究室",
+        },
+        {
+          period: "2022/08 — 2025/03",
+          title: "学部後期課程",
+          detail: "東京大学 理学部 物理学科",
+        },
+        {
+          period: "2021/04 — 2022/07",
+          title: "学部前期課程",
+          detail: "東京大学 教養学部 前期課程",
+        },
+        // {
+        //   period: "2018/04 — 2021/03",
+        //   title: "高校",
+        //   detail: "栃木県立真岡高等学校",
+        // },
+      ],
     },
-    history: [
-      {
-        period: "2025 — 現在",
-        title: "物理学専攻 修士課程",
-        detail: "東京大学大学院理学系研究科 物理学専攻 藤堂研究室",
-      },
-      {
-        period: "2022/07 — 2025",
-        title: "物理学科 学部課程",
-        detail: "東京大学理学部物理学科",
-      },
-      {
-        period: "2021 — 2022/07",
-        title: "前期教養学部",
-        detail: "東京大学教養学部。東京大学の特殊な進学振分制度による所属。",
-      },
-      {
-        period: "2018 — 2021",
-        title: "高等学校",
-        detail: "栃木県立真岡高等学校",
-      },
-    ],
-    papers: [
-      {
-        title: "論文タイトル（仮）",
-        description: "論文情報を後日掲載します。",
-      },
-    ],
-    projects: [
-      {
-        title: "Tensory",
-        description:
-          "汎用バックエンドに対応したテンソル演算のためのRustフレームワーク。",
-        tech: ["Rust", "線形代数"],
-      },
-      {
-        title: "APOBLAST",
-        description:
-          "モデルハミルトニアンの時間発展と固有状態を可視化する再現可能なノートブック。",
-        tech: ["Python", "対称性", "線形代数"],
-      },
-      {
-        title: "OSS貢献",
-        description:
-          "研究ノート、発表、プロジェクトの更新を共有するためのツールとドキュメント。",
-        tech: ["Astro", "TypeScript", "GitHub Pages"],
-      },
-    ],
-    labels: { email: "メール", github: "GitHub" },
+    projects: {
+      label: "プロジェクト",
+      entries: [
+        {
+          title: "Tensory",
+          description:
+            "Rustで実装された、低〜中レベルテンソルネットワークライブラリ。型システムによる抽象化・拡張性と、ライフタイムによるRAIIな資源管理を両立。",
+          tech: ["Rust", "テンソルネットワーク", "線形代数"],
+        },
+        {
+          title: "APOBLAST",
+          description: "対称性を使って方程式推定の探索空間を狭めるライブラリ。",
+          tech: ["Python", "対称性", "方程式推定", "シンボリック計算"],
+        },
+        {
+          title: "OSS貢献",
+          description:
+            "OSS世界への貢献。自分が出くわした問題のIssueやPRやForkが多い。",
+          tech: ["Nix", "Nginx", "WSL", "And more ..."],
+        },
+      ],
+    },
+    papers: {
+      label: "論文",
+      entries: [
+        {
+          title:
+            "Symmetry-Informed Term Filtering for Continuum Equation Discovery",
+          description: "APOBLASTに対応する論文。",
+        },
+      ],
+    },
+    contacts: {
+      label: "連絡先",
+      entries: { email: "メール", github: "GitHub" },
+    },
   },
 } as const satisfies Record<Locale, unknown>;
 

@@ -37,13 +37,17 @@ const page = content[currentLocale];
           </div>
           <dl class="identity-list">
             <div>
-              <dt>{page.hero.labels.usernames}</dt>
-              <dd>{common.usernames.join(", ")}</dd>
-            </div>
-            <div>
               <dt>{page.hero.labels.affiliation}</dt><dd>
                 {page.hero.affiliation}
               </dd>
+            </div>
+            <div>
+              <dt>{page.hero.labels.interests}</dt>
+              <dd>{page.hero.interests.join(", ")}</dd>
+            </div>
+            <div>
+              <dt>{page.hero.labels.usernames}</dt>
+              <dd>{common.usernames.join(", ")}</dd>
             </div>
           </dl>
         </div>
@@ -56,11 +60,11 @@ const page = content[currentLocale];
       aria-labelledby="history-title"
     >
       <div class="section-heading">
-        <h2 id="history-title">{page.sections.history}</h2>
+        <h2 id="history-title">{page.history.label}</h2>
       </div>
       <ol class="history-list">
         {
-          page.history.map((item) => (
+          page.history.entries.map((item) => (
             <li>
               <div class="history-period">{item.period}</div>
               <div>
@@ -81,11 +85,11 @@ const page = content[currentLocale];
       aria-labelledby="projects-title"
     >
       <div class="section-heading">
-        <h2 id="projects-title">{page.sections.projects}</h2>
+        <h2 id="projects-title">{page.projects.label}</h2>
       </div>
       <div class="project-list">
         {
-          page.projects.map((project) => (
+          page.projects.entries.map((project) => (
             <article class="project-row">
               <div class="project-body">
                 <>
@@ -110,11 +114,11 @@ const page = content[currentLocale];
       aria-labelledby="papers-title"
     >
       <div class="section-heading">
-        <h2 id="papers-title">{page.sections.papers}</h2>
+        <h2 id="papers-title">{page.papers.label}</h2>
       </div>
       <ul class="paper-list">
         {
-          page.papers.map((paper) => (
+          page.papers.entries.map((paper) => (
             <li>
               <h3>{paper.title}</h3>
               <p>{paper.description}</p>
@@ -130,11 +134,13 @@ const page = content[currentLocale];
       aria-labelledby="contact-title"
     >
       <div>
-        <h2 id="contact-title">{page.sections.contact}</h2>
+        <h2 id="contact-title">{page.contacts.label}</h2>
       </div>
       <div class="contact-links">
         <a class="contact-link" href={`mailto:${common.email}`}>
-          <span>{page.labels.email}</span><strong>{common.email}</strong>
+          <span>{page.contacts.entries.email}</span><strong
+            >{common.email}</strong
+          >
         </a>
         <a
           class="contact-link"
@@ -142,7 +148,9 @@ const page = content[currentLocale];
           target="_blank"
           rel="noreferrer"
         >
-          <span>{page.labels.github}</span><strong>{common.account}</strong>
+          <span>{page.contacts.entries.github}</span><strong
+            >{common.account}</strong
+          >
         </a>
       </div>
     </section>

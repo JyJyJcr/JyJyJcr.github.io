@@ -55,6 +55,10 @@ h1 {
   line-height: 1;
 }
 
+.hero-copy h1 {
+  margin-bottom: 1.5rem;
+}
+
 h2 {
   margin-bottom: 1rem;
   font-size: 1.8rem;
