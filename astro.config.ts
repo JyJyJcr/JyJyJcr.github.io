@@ -27,4 +27,5 @@ export default defineConfig({
       redirectToDefaultLocale: true,
     },
   },
+  security: { csp: true },
 });

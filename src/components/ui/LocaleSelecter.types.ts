@@ -1,5 +1,13 @@
-interface LocaleSelecterTranslation {
+import type { LocaleCode } from "../../i18n";
+
+interface LocaleSelecterLocalization {
+  code: LocaleCode;
   explanation: string;
 }
 
-export type { LocaleSelecterTranslation };
+interface LocaleEntryLocalization {
+  code: LocaleCode;
+  nativeName: string;
+}
+
+export type { LocaleSelecterLocalization, LocaleEntryLocalization };

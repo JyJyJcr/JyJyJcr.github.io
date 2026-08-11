@@ -1,29 +1,46 @@
 ---
-import { localeInfos, type Locale } from "../../i18n";
-import type { LocaleSelecterTranslation } from "./LocaleSelecter.types";
+import type {
+  LocaleSelecterLocalization,
+  LocaleEntryLocalization,
+} from "./LocaleSelecter.types";
+import type { Router, ReverseRouter } from "../../route";
 
 interface Props {
-  selectedLocale: Locale;
-  localeList: Locale[];
-  translation: LocaleSelecterTranslation;
-  localeSwitcher: (locale: Locale, path: string) => string;
+  loc: LocaleSelecterLocalization;
+  xRouter: ReverseRouter;
+  entries: {
+    router: Router;
+    loc: LocaleEntryLocalization;
+  }[];
+  selectedEntryIdx: number;
 }
-const { selectedLocale, localeList, localeSwitcher, translation } = Astro.props;
+const { loc, xRouter, entries, selectedEntryIdx } = Astro.props;
+const selectedEntry =
+  entries[selectedEntryIdx] ??
+  (() => {
+    throw new Error("No selected entry");
+  })();
 ---
 
-<details class="locale-selector" data-locale-selector>
-  <summary aria-label={translation.explanation}
-    >{localeInfos[selectedLocale].nativeName}</summary
+<details
+  class="locale-selector"
+  data-locale-selector
+  aria-label={loc.explanation}
+  lang={loc.code}
+>
+  <summary lang={selectedEntry.loc.code}>{selectedEntry.loc.nativeName}</summary
   >
   <ul>
     {
-      localeList.map((locale) => (
+      entries.map(({ router, loc: entryLoc }, index) => (
         <li>
           <a
-            href={localeSwitcher(locale, Astro.url.pathname)}
-            aria-current={locale === selectedLocale && "page"}
+            href={router.route(xRouter.xRoute(Astro.url.pathname))}
+            aria-current={index === selectedEntryIdx && "page"}
+            class:list={{ "list-selected": index === selectedEntryIdx }}
+            lang={entryLoc.code}
           >
-            {localeInfos[locale].nativeName}
+            {entryLoc.nativeName}
           </a>
         </li>
       ))
@@ -36,14 +53,22 @@ const { selectedLocale, localeList, localeSwitcher, translation } = Astro.props;
 <style>
   .locale-selector {
     position: relative;
+    margin-left: auto;
+    min-width: 7rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg);
   }
 
   summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     list-style: none;
+    min-height: 2.75rem;
     padding: 0.45rem 0.8rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
+    white-space: nowrap;
     color: var(--text-soft);
     font-size: 0.9rem;
     font-weight: 700;
@@ -55,11 +80,11 @@ const { selectedLocale, localeList, localeSwitcher, translation } = Astro.props;
 
   ul {
     position: absolute;
-    top: calc(100% + 0.75rem);
+    top: 0;
     right: 0;
+    min-width: 8rem;
     display: grid;
     gap: 0.4rem;
-    min-width: 8rem;
     margin: 0;
     padding: 0.6rem;
     list-style: none;
@@ -69,17 +94,34 @@ const { selectedLocale, localeList, localeSwitcher, translation } = Astro.props;
     box-shadow: 0 12px 30px rgba(20, 36, 51, 0.14);
   }
 
+  :global(.locale-selector[open]) {
+    visibility: hidden;
+  }
+
+  :global(.locale-selector[open]) summary {
+    visibility: hidden;
+  }
+
+  :global(.locale-selector[open]) ul {
+    visibility: visible;
+  }
+
   a {
-    display: block;
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
     padding: 0.35rem 0.5rem;
     color: var(--text-soft);
     text-decoration: none;
   }
 
   a:hover,
-  a:focus-visible,
-  a[aria-current="page"] {
+  a:focus-visible {
     color: var(--accent-strong);
     background: #edf7fa;
+  }
+
+  a.list-selected {
+    font-weight: 700;
   }
 </style>

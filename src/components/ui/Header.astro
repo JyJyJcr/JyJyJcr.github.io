@@ -1,36 +1,30 @@
 ---
-import type { Locale } from "../../i18n";
 import Navigation from "./Navigation.astro";
 import LocaleSelecter from "./LocaleSelecter.astro";
-import type { HeaderTranslation } from "./Header.types";
+import type { HeaderLocalization } from "./Header.types";
+import type { Router, ReverseRouter } from "../../route";
+import type { LocaleEntryLocalization } from "./LocaleSelecter.types";
 
 interface Props {
-  selectedLocale: Locale;
-  localeList: Locale[];
-  rootPrefixer: (path: string) => string;
-  localeSwitcher: (locale: Locale, path: string) => string;
-  translation: HeaderTranslation;
+  router: Router & ReverseRouter;
+  loc: HeaderLocalization;
+  localeEntries: {
+    router: Router;
+    loc: LocaleEntryLocalization;
+  }[];
+  selectedLocaleEntryIdx: number;
 }
-const {
-  selectedLocale,
-  localeList,
-  rootPrefixer,
-  localeSwitcher,
-  translation,
-} = Astro.props;
+const { router, loc, localeEntries, selectedLocaleEntryIdx } = Astro.props;
 ---
 
 <header class="site-header">
   <div class="header-inner">
-    <Navigation
-      translation={translation.navigation}
-      rootPrefixer={rootPrefixer}
-    />
+    <Navigation router={router} loc={loc.navigation} />
     <LocaleSelecter
-      selectedLocale={selectedLocale}
-      localeList={localeList}
-      localeSwitcher={localeSwitcher}
-      translation={translation.localeSelector}
+      xRouter={router}
+      loc={loc.localeSelector}
+      entries={localeEntries}
+      selectedEntryIdx={selectedLocaleEntryIdx}
     />
   </div>
 </header>
@@ -44,22 +38,16 @@ const {
     z-index: 10;
     min-height: var(--header-height);
     border-bottom: 1px solid var(--line);
-    background: rgba(244, 246, 248, 0.9);
-    backdrop-filter: blur(12px);
+    background: var(--bg);
   }
 
   .header-inner {
-    width: 100%;
+    width: min(960px, calc(100% - 2rem));
+    margin-inline: auto;
+    height: var(--header-height);
     min-height: var(--header-height);
-    padding-inline: clamp(1rem, 4vw, 4rem);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-  }
-
-  @media (max-width: 760px) {
-    .header-inner {
-      width: 100%;
-    }
+    gap: 2rem;
   }
 </style>

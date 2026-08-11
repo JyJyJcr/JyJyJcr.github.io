@@ -1,13 +1,14 @@
 ---
-import type { FooterTranslation } from "./Footer.types";
+import type { FooterLocalization } from "./Footer.types";
 
 interface Props {
-  translation: FooterTranslation;
+  loc: FooterLocalization;
 }
 
-const { translation } = Astro.props;
+const { loc } = Astro.props;
+//const commitHash = String(import.meta.env.PUBLIC_COMMIT_HASH ?? "dev");
 ---
 
 <footer>
-  <p>&copy; {new Date().getFullYear()} · {translation.builtWithAstro}</p>
+  <p>{loc.builtWithAstro}</p>
 </footer>

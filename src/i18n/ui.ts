@@ -1,11 +1,20 @@
 import type { Locale } from ".";
-import type { BaseTranslation } from "../layouts/Base.types";
+import type { BaseLocalization } from "../layouts/Base.types";
 
-const baseTranslations: Record<Locale, BaseTranslation> = {
+const baseLocalizations: Record<Locale, BaseLocalization> = {
   en: {
+    code: "en",
+    wrapTitle: (title: string) => `${title} | Jy`,
+    entry: {
+      code: "en",
+      nativeName: "English",
+    },
+    skipToContent: "Skip to content",
     header: {
       navigation: {
-        explanation: "navigation",
+        code: "en",
+        explanation: "Primary navigation",
+        menu: "Menu",
         nav: {
           about: "About",
           papers: "Papers",
@@ -14,17 +23,28 @@ const baseTranslations: Record<Locale, BaseTranslation> = {
         },
       },
       localeSelector: {
-        explanation: "locale selector",
+        code: "en",
+        explanation: "Language selector",
       },
     },
     footer: {
+      code: "en",
       builtWithAstro: "This site was built with Astro.",
     },
   },
   ja: {
+    code: "ja",
+    wrapTitle: (title: string) => `${title} | Jy`,
+    entry: {
+      code: "ja",
+      nativeName: "日本語",
+    },
+    skipToContent: "本文へ移動",
     header: {
       navigation: {
-        explanation: "ナビゲーション",
+        code: "ja",
+        explanation: "メインナビゲーション",
+        menu: "メニュー",
         nav: {
           about: "概要",
           papers: "論文",
@@ -33,29 +53,15 @@ const baseTranslations: Record<Locale, BaseTranslation> = {
         },
       },
       localeSelector: {
-        explanation: "ロケール選択",
+        code: "ja",
+        explanation: "言語選択",
       },
     },
     footer: {
+      code: "ja",
       builtWithAstro: "このサイトはAstroで構築されました。",
     },
   },
 };
 
-export { baseTranslations };
-
-// export const languages = {
-//     en: "English",
-//     ja: "日本語",
-//   },
-//   ui = {
-//     en: {
-//       "nav.home": "Home",
-//       "nav.about": "About",
-//       "nav.twitter": "Twitter",
-//     },
-//     ja: {
-//       "nav.home": "ホーム",
-//       "nav.about": "約",
-//     },
-//   } as const;
+export { baseLocalizations };

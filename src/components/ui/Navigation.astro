@@ -1,51 +1,80 @@
 ---
-import type { NavigationTranslation } from "./Navigation.types";
+import type { NavigationLocalization } from "./Navigation.types";
+import type { Router } from "../../route";
 
 interface Props {
-  translation: NavigationTranslation;
-  rootPrefixer: (path: string) => string;
+  router: Router;
+  loc: NavigationLocalization;
 }
-const { translation, rootPrefixer } = Astro.props;
+const { loc, router } = Astro.props;
+
+const navItems = [
+  { href: router.route("/#about"), label: loc.nav.about },
+  { href: router.route("/#projects"), label: loc.nav.projects },
+  { href: router.route("/#papers"), label: loc.nav.papers },
+  { href: router.route("/#contact"), label: loc.nav.contact },
+];
 ---
 
 <nav
   class="navigation-links desktop-navigation"
-  aria-label={translation.explanation}
+  aria-label={loc.explanation}
+  lang={loc.code}
 >
-  <a href={rootPrefixer("/#about")}>{translation.nav.about}</a>
-  <a href={rootPrefixer("/#papers")}>{translation.nav.papers}</a>
-  <a href={rootPrefixer("/#projects")}>{translation.nav.projects}</a>
-  <a href={rootPrefixer("/#contact")}>{translation.nav.contact}</a>
+  {navItems.map(({ href, label }) => <a href={href}>{label}</a>)}
 </nav>
 
-<details class="navigation-menu mobile-navigation">
-  <summary aria-label={translation.explanation}>Menu</summary>
-  <nav class="navigation-links" aria-label={translation.explanation}>
-    <a href={rootPrefixer("/#about")}>{translation.nav.about}</a>
-    <a href={rootPrefixer("/#papers")}>{translation.nav.papers}</a>
-    <a href={rootPrefixer("/#projects")}>{translation.nav.projects}</a>
-    <a href={rootPrefixer("/#contact")}>{translation.nav.contact}</a>
+<details
+  class="navigation-menu mobile-navigation"
+  data-navigation-selector
+  lang={loc.code}
+>
+  <summary aria-label={loc.menu}>
+    <span class="menu-icon" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </span>
+  </summary>
+  <nav class="navigation-links" aria-label={loc.explanation}>
+    {navItems.map(({ href, label }) => <a href={href}>{label}</a>)}
   </nav>
 </details>
 
+<script src="./Navigation.client.ts"></script>
+
 <style>
   .navigation-menu summary {
+    display: grid;
+    place-items: center;
     cursor: pointer;
     list-style: none;
-    font-weight: 700;
+    width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0;
   }
 
   .navigation-menu summary::-webkit-details-marker {
     display: none;
   }
 
-  nav {
-    display: flex;
-    align-items: center;
-    gap: 1.15rem;
+  .menu-icon,
+  .menu-icon span {
+    display: block;
+  }
+
+  .menu-icon {
+    width: 1.35rem;
+  }
+
+  .menu-icon span {
+    height: 2px;
+    margin: 0.25rem 0;
+    background: currentColor;
   }
 
   nav a {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
     color: var(--text-soft);
     font-size: 0.95rem;
     font-weight: 600;
@@ -57,28 +86,38 @@ const { translation, rootPrefixer } = Astro.props;
     color: var(--accent-strong);
   }
 
-  @media (min-width: 761px) {
-    .mobile-navigation {
-      display: none;
-    }
-
-    .navigation-links {
-      display: flex;
-    }
+  .navigation-menu {
+    position: relative;
   }
 
-  @media (max-width: 760px) {
+  .navigation-links {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    white-space: nowrap;
+  }
+
+  .mobile-navigation {
+    display: none;
+  }
+
+  @media (max-width: 480px) {
     .desktop-navigation {
       display: none;
+    }
+
+    .mobile-navigation {
+      display: block;
     }
 
     :global(.navigation-menu[open] .navigation-links) {
       position: absolute;
       top: calc(100% - 0.25rem);
-      left: 1rem;
+      left: 0;
       display: grid;
       gap: 0.75rem;
       min-width: 11rem;
+      max-width: calc(100vw - 2rem);
       padding: 1rem;
       border: 1px solid var(--line);
       border-radius: 12px;

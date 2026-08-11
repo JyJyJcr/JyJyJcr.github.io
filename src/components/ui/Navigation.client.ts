@@ -1,6 +1,6 @@
 {
   const dismissibleDetails = document.querySelectorAll<HTMLElement>(
-    "[data-locale-selector]",
+    "[data-navigation-selector]",
   );
 
   document.addEventListener("click", (event) => {

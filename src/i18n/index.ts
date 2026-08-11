@@ -1,6 +1,7 @@
 const localeList = ["en", "ja"] as const;
 type Locale = (typeof localeList)[number];
 const defaultLocale = "en";
+type LocaleCode = string;
 
 interface LocaleInfo {
   nativeName: string;
@@ -15,5 +16,5 @@ const localeInfos: Record<Locale, LocaleInfo> = {
   },
 } as const;
 
-export type { Locale, LocaleInfo };
+export type { Locale, LocaleInfo, LocaleCode };
 export { defaultLocale, localeList, localeInfos };

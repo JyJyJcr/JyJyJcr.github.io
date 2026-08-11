@@ -36,20 +36,44 @@ const addLocale = (lang: Locale, path: string): string => {
   }
   return `/${lang}${path}`;
 };
-const prefixCommonRoot = (path: string): string => addBase(path);
-const prefixLocaleRoot = (locale: Locale, path: string): string =>
+const addCommonRoot = (path: string): string => addBase(path);
+const removeCommonRoot = (path: string): string => removeBase(path);
+
+const addLocaleRoot = (locale: Locale, path: string): string =>
   addBase(addLocale(locale, path));
-const switchLocale = (locale: Locale, path: string): string => {
+const removeLocaleRoot = (_locale: Locale, path: string): string => {
   const [, rest] = splitLocale(removeBase(path));
-  return prefixLocaleRoot(locale, rest);
+  return addBase(rest);
 };
 
+interface Router {
+  route: (path: string) => string;
+}
+
+interface ReverseRouter {
+  xRoute: (path: string) => string;
+}
+
+const buildNormalLocaleRouter = (locale: Locale): Router & ReverseRouter => ({
+  route: (path: string): string => addLocaleRoot(locale, path),
+  xRoute: (path: string): string => removeLocaleRoot(locale, path),
+});
+
+const buildCommonRouter = (): Router & ReverseRouter => ({
+  route: (path: string): string => addCommonRoot(path),
+  xRoute: (path: string): string => removeCommonRoot(path),
+});
+
 export {
-  removeBase,
-  addBase,
-  splitLocale,
-  addLocale,
-  prefixCommonRoot,
-  prefixLocaleRoot,
-  switchLocale,
+  type Router,
+  type ReverseRouter,
+  // removeBase,
+  // addBase,
+  // splitLocale,
+  // addLocale,
+  // prefixCommonRoot,
+  // addLocaleRoot,
+  // removeLocaleRoot,
+  buildNormalLocaleRouter,
+  buildCommonRouter,
 };

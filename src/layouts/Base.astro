@@ -3,8 +3,8 @@ import { localeList, type Locale } from "../i18n";
 import Head from "../components/Head.astro";
 import Header from "../components/ui/Header.astro";
 import Footer from "../components/ui/Footer.astro";
-import { baseTranslations } from "../i18n/ui";
-import { prefixLocaleRoot, switchLocale } from "../route";
+import { baseLocalizations } from "../i18n/ui";
+import { buildNormalLocaleRouter } from "../route";
 
 interface Props {
   locale: Locale;
@@ -12,35 +12,52 @@ interface Props {
   description: string;
 }
 
-const { locale, title, description } = Astro.props;
-const translation = baseTranslations[locale];
+const { locale: currentLocale, title, description } = Astro.props;
+const currentRouter = buildNormalLocaleRouter(currentLocale);
+const currentLocalization = baseLocalizations[currentLocale];
+
+const entries = localeList.map((locale) => ({
+  router: buildNormalLocaleRouter(locale),
+  loc: baseLocalizations[locale].entry,
+}));
+
+const idx = (() => {
+  const maybeIndex = localeList.findIndex((locale) => locale === currentLocale);
+  const notFoundIndex = -1;
+  if (maybeIndex === notFoundIndex) {
+    throw new Error(`Unsupported locale: ${currentLocale}`);
+  }
+  return maybeIndex;
+})();
 ---
 
-<html lang={locale}>
-  <Head title={title} description={description} />
+<html lang={currentLocale}>
+  <Head
+    title={currentLocalization.wrapTitle(title)}
+    description={description}
+  />
   <body>
-    <div aria-hidden="true" class="ambient"></div>
+    <a class="skip-link" href="#main-content" lang={currentLocalization.code}
+      >{currentLocalization.skipToContent}</a
+    >
     <Header
-      selectedLocale={locale}
-      localeList={[...localeList]}
-      translation={translation.header}
-      rootPrefixer={(path: string) => prefixLocaleRoot(locale, path)}
-      localeSwitcher={(loc: Locale, path: string) => switchLocale(loc, path)}
+      router={currentRouter}
+      loc={currentLocalization.header}
+      localeEntries={entries}
+      selectedLocaleEntryIdx={idx}
     />
     <div class="page-content">
       <slot />
     </div>
-    <Footer translation={translation.footer} />
+    <Footer loc={currentLocalization.footer} />
   </body>
 </html>
 
 <style is:global>
   :root {
     --bg: #f4f6f8;
-    --bg-deep: #dbe3ea;
     --text: #142433;
     --text-soft: #365266;
-    --card: rgba(255, 255, 255, 0.86);
     --line: #b7c8d8;
     --accent: #0e7490;
     --accent-strong: #155e75;
@@ -58,30 +75,52 @@ const translation = baseTranslations[locale];
     padding: 0;
     font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
     color: var(--text);
-    background: radial-gradient(
-      circle at 15% 10%,
-      #fff 0%,
-      var(--bg) 50%,
-      var(--bg-deep) 100%
-    );
+    background: var(--bg);
   }
 
   body {
     line-height: 1.5;
   }
 
+  :lang(en) body {
+    font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+    hyphens: auto;
+  }
+
+  :lang(ja) body {
+    font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    line-break: strict;
+    overflow-wrap: anywhere;
+  }
+
+  h1 {
+    hyphens: none;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
   a {
     color: inherit;
   }
 
-  .ambient {
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .skip-link {
     position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-      linear-gradient(120deg, rgba(14, 116, 144, 0.1), transparent 50%),
-      linear-gradient(320deg, rgba(21, 94, 117, 0.12), transparent 45%);
-    z-index: 0;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 20;
+    padding: 0.65rem 0.9rem;
+    color: #fff;
+    background: var(--accent-strong);
+    transform: translateY(-200%);
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
   }
 
   .page-content {
@@ -94,170 +133,13 @@ const translation = baseTranslations[locale];
   footer {
     width: 100%;
     margin-inline: auto;
-    padding-inline: clamp(1rem, 4vw, 4rem);
+    padding-inline: 4rem;
   }
 
   main {
     display: grid;
     gap: 1.2rem;
-    padding-bottom: 2rem;
-  }
-
-  .hero,
-  .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: clamp(1.2rem, 2vw + 0.8rem, 2.1rem);
-  }
-
-  .hero {
-    animation: fade-up 0.55s ease;
-  }
-
-  .eyebrow {
-    margin: 0;
-    color: var(--accent-strong);
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  h1 {
-    margin: 0.45rem 0 0;
-    font-size: clamp(1.9rem, 5vw, 3rem);
-    line-height: 1.1;
-  }
-
-  h2 {
-    margin-top: 0;
-    margin-bottom: 0.9rem;
-    font-size: clamp(1.2rem, 2.3vw, 1.5rem);
-  }
-
-  .subtitle {
-    max-width: 66ch;
-    margin-bottom: 1.2rem;
-    color: var(--text-soft);
-    line-height: 1.7;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .button {
-    display: inline-block;
-    border-radius: 999px;
-    padding: 0.62rem 1.1rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .button-primary {
-    color: #fff;
-    background: var(--accent);
-  }
-
-  .button-secondary {
-    color: var(--accent-strong);
-    border: 1px solid var(--accent);
-  }
-
-  .interest-list,
-  .timeline,
-  .tag-list,
-  .contact-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .interest-list li,
-  .timeline li,
-  .contact-list li {
-    padding: 0.58rem 0;
-    border-bottom: 1px dashed var(--line);
-  }
-
-  .interest-list li:last-child,
-  .timeline li:last-child,
-  .contact-list li:last-child {
-    border-bottom: none;
-  }
-
-  .period {
-    color: var(--accent-strong);
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .timeline h3 {
-    margin: 0.35rem 0 0.2rem;
-    font-size: 1rem;
-  }
-
-  .timeline p,
-  .project-item p {
-    color: var(--text-soft);
-  }
-
-  .grid-section,
-  .project-grid {
-    display: grid;
-    gap: 1.2rem;
-  }
-
-  .grid-section {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .project-grid {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  }
-
-  .project-item {
-    padding: 1rem;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: #f9fcff;
-  }
-
-  .project-item h3 {
-    margin-top: 0;
-    font-size: 1.05rem;
-  }
-
-  .tag-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-  }
-
-  .tag-list li {
-    padding: 0.24rem 0.62rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    color: var(--text-soft);
-    font-size: 0.8rem;
-    background: #fff;
-  }
-
-  .contact-list a {
-    color: var(--accent-strong);
-  }
-
-  @keyframes fade-up {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    padding-bottom: 0;
   }
 
   footer {
@@ -267,18 +149,34 @@ const translation = baseTranslations[locale];
     margin: 0;
     border-top: 1px solid var(--line);
     color: var(--text-soft);
-    padding: 1rem clamp(1rem, 4vw, 4rem) 1.25rem;
-    background: rgba(255, 255, 255, 0.62);
-    font-size: 0.93rem;
+    padding: 1.25rem 4rem 1.5rem;
+    background: var(--bg);
+    font-size: 0.85rem;
   }
 
   @media (max-width: 760px) {
-    :root {
-      --header-height: 4rem;
+    main,
+    footer {
+      padding-inline: 1rem;
     }
 
-    .grid-section {
-      grid-template-columns: 1fr;
+    footer {
+      padding-block: 1.25rem 1.5rem;
+    }
+  }
+
+  footer p {
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
     }
   }
 </style>

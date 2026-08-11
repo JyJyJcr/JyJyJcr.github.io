@@ -1,5 +1,6 @@
-interface FooterTranslation {
+interface FooterLocalization {
+  code: string;
   builtWithAstro: string;
 }
 
-export type { FooterTranslation };
+export type { FooterLocalization };

@@ -1,4 +1,8 @@
-interface NavigationTranslation {
+import type { LocaleCode } from "../../i18n";
+
+interface NavigationLocalization {
+  code: LocaleCode;
+  menu: string;
   explanation: string;
   nav: {
     about: string;
@@ -8,4 +12,4 @@ interface NavigationTranslation {
   };
 }
 
-export type { NavigationTranslation };
+export type { NavigationLocalization };
